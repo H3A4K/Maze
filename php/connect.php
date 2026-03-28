@@ -1,13 +1,19 @@
 <?php
 /**
+ * Author : Alexander Perlock
+ * MACID  : perlocka
  * 
+ * Date Created  : 27 03 26
+ * Date Modified : 27 03 26
+ * 
+ * Connect to database
  */
 try {
     $dbh = new PDO(
-        "mysql:host=local_host;dbname=perlocka_db",
-        "root",
-        ""
+        "mysql:host=localhost;dbname=perlocka_db",
+        "root", // perlocka_local
+        "" // {FmD,8Pe
     );
 } catch (Exception $e) {
-    die("ERROR: Could Not Connect To Database. {$e->getMessage()}");
+    die("ERROR: Couldn't connect. {$e->getMessage()}");
 }
