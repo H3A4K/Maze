@@ -1,6 +1,18 @@
+/**
+ * Author : Alexander Perlock
+ * MACID : perlocka
+ * Date Created : 27 03 26
+ * Date Modified : 28 03 26
+ * 
+ * Handles login logic for index.php and login.php
+ */
+
 window.addEventListener("load", function() {
     const button = document.getElementById("submit");
     
+    /**
+     * Handles Swapping from login form to move to play.php form
+     */
     function login_success() {
         const email = document.getElementById("email").value;
 
@@ -23,6 +35,14 @@ window.addEventListener("load", function() {
         container.appendChild(form);
     }
 
+    /**
+     * Handles the return from the AJAX fetch
+     * 
+     * @param {string} key the echo'd information from login.php.
+     *  Either :    0 -> Password and Email do not match.
+     *              1 -> Password matches Email.
+     *              2 -> Email not recognised, new user added.
+     */
     function fetch_success(key) {
         const display = document.getElementById("feedback");
         console.log(key)
@@ -43,18 +63,25 @@ window.addEventListener("load", function() {
         }
     }
 
+    /**
+     * Determines if the email meets basic critera.
+     * 
+     * @param {string} email the email to validate
+     * 
+     * @return 0 (email invalid) or 1 (email valid)
+     */
     function validate_email(email) {
-        if (!email.value.includes(".")) {
-            return 0;
-        }
+        if (!email.includes(".")) { return 0 }
         return 1;
     }
-
-
+   
+    /**
+     * Handles sending the AJAX request if critera met.
+     */
     button.addEventListener("click", () => {
         const email = document.getElementById("email");
 
-        if (!validate_email(email)) { return }
+        if (!validate_email(email.value)) { return }
 
         const birthdate = document.getElementById("birthdate");
 
