@@ -8,4 +8,32 @@
  * 
  * Main game page
  */
-echo '<header><img src="./assets/images/exit.png" id="exit" width="64px" height="64px" class="hidden"><h1 class="hidden">Maze</h1></header><canvas id="banner" class="main"></canvas><div id="display"></div><div id="controls"></div><footer></footer>';
+
+?>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Maze</title>
+
+    <link rel="stylesheet" href="./assets/css/global.css">
+
+    <script src="./js/map.js"></script>
+    <script src="./js/controls.js"></script> 
+    <script src="./js/pages.js"></script>
+    <script src="./js/maze.js"></script>
+    <script src="./js/main.js"></script>
+
+</head>
+
+<body>
+    <header><img src="./assets/images/exit.png" id="exit" width="64px" height="64px" class="hidden"><h1 class="hidden">Maze</h1></header>
+    <canvas id="banner" class="main"></canvas>
+    <div id="display"></div>
+    <div id="controls"></div>
+    <footer></footer>
+</body>
+
+</html>

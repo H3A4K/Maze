@@ -13,5 +13,5 @@
  * 
  * @param {type} input
  * 
- * @returns output
+ * @return output
  */

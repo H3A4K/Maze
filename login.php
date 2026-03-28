@@ -11,15 +11,15 @@
  */
 include "./php/connect.php";
 
-function add_user($dbh, $email, $birthdate) {
-    $cmd = "INSERT INTO `players` VALUES (?, null, ?, null)";
-    $stmt = $dbh->prepare($cmd);
-    $stmt->execute([$email, $birthdate]);
-
-    return get_user($dbh, $email);
-}
-
-function get_user($dbh, $email) {
+/**
+ * Gets the userID from the given email
+ * 
+ * @param PDO $dbh The database in which to do queries from/to
+ * @param string $email the given email
+ * 
+ * @return int the user's ID OR 0 if no user matches
+ */
+function get_user(PDO $dbh, string $email) {
     $cmd = "SELECT `userID` FROM `players` WHERE `email`=?";
     $stmt = $dbh->prepare($cmd);
     $stmt->execute([$email]);
@@ -29,7 +29,33 @@ function get_user($dbh, $email) {
     return $user === null ? 0 : $user;
 }
 
-function check_password($dbh, $userID, $birthdate) {
+/**
+ * Adds the user to the database
+ * 
+ * @param PDO $dbh The database in which to do queries from/to
+ * @param string $email the user's email
+ * @param string $birthdate the user's "password"
+ * 
+ * @return int the new user's ID
+ */
+function add_user(PDO $dbh, string $email, string $birthdate) {
+    $cmd = "INSERT INTO `players` VALUES (?, null, ?, null)";
+    $stmt = $dbh->prepare($cmd);
+    $stmt->execute([$email, $birthdate]);
+
+    return get_user($dbh, $email);
+}
+
+/**
+ * Checks the user's stored "password" against the given one
+ * 
+ * @param PDO $dbh The database in which to do queries from/to
+ * @param int $userID the user's ID
+ * @param string $birthdate the "password" to check
+ * 
+ * @return bool if the user's password is equal to the given password
+ */
+function check_password(PDO $dbh, int $userID, string $birthdate) {
     $cmd = "SELECT `birthdate` FROM `players` WHERE `userID`=?";
     $stmt = $dbh->prepare($cmd);
     $stmt->execute([$userID]);
@@ -38,6 +64,7 @@ function check_password($dbh, $userID, $birthdate) {
 
     return $dbh_bd === $birthdate;
 }
+
 
 $email = filter_input(INPUT_GET, "email", FILTER_VALIDATE_EMAIL);
 $birthdate = filter_input(INPUT_GET, "birthdate", FILTER_DEFAULT);
