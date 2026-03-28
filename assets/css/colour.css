@@ -1,0 +1,19 @@
+/* 
+ * Author : Alexander Perlock
+ * MACID : perlocka
+ * Date Created : 02 03 26
+ * Date Modified : 21 03 26
+ * 
+ * Colour format
+ */
+
+:root {
+    --bg-colour : #222;
+    --fg-colour : white;
+
+    --h-bg-colour : beige;
+    --h-fg-colour : #222;
+
+    --hover-colour: #444;
+    --selected-colour: #333;
+}

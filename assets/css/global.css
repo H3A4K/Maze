@@ -1,0 +1,118 @@
+/* 
+ * Author : Alexander Perlock
+ * MACID : perlocka
+ * Date Created : 02 03 26
+ * Date Modified : 21 03 26
+ * 
+ * Global formating and imports
+ */
+
+/* Imports */
+@import url(./colour.css);
+@import url(./pages.css);
+@import url(./info.css);
+@import url(./start_page.css);
+@import url(./settings_page.css);
+@import url(./scoreboard_page.css);
+
+/* Formating */
+* {
+    color: var(--fg-colour);
+    margin : 0;
+    padding : 0;
+    border : 0;
+    font-size: 3vh;
+    list-style: none;
+}
+
+h1 {
+    font-size: 5vh;
+}
+
+body {
+    background-color: var(--bg-colour);
+    overflow: hidden;
+}
+
+header, header *, footer, footer * {
+    background-color: var(--h-bg-colour);
+    color: var(--h-fg-colour);
+}
+
+header, footer {
+    width: 100vw;
+    z-index: 20;
+}
+
+header {
+    position: relative;
+    height: 7.5vh;
+}
+
+footer {
+    position: absolute;
+    height: 2.5vh;
+    bottom: 0;
+}
+
+header img {
+    max-height: 7.5vh;
+}
+
+header h1 {
+    position: relative;
+    padding-top: 0.5%;
+    text-align: center;
+}
+
+#exit {
+    position: absolute;
+    top : 0;
+    bottom: 0;
+    z-index: 30;
+}
+
+
+.main {
+    /* https://stackoverflow.com/questions/73546361/how-to-make-a-canvas-proportionally-responsive */
+    /* width: 50vmin;
+    height: 100vmin; */
+    background-color: var(--bg-colour);
+    /* color: var(--fg-colour); */
+    position: absolute;
+    top: 7.5vh;
+    left: 0;
+}
+
+.inverted {
+    filter: invert(100%);
+}
+
+.trackpad {
+    position: absolute;
+    bottom: 3vh;
+    /* left: 5%; */
+    left: 5vw;
+    /* right: 50%; */
+    /* transform: translate(50%, 50%); */
+    z-index: 10;
+    border-radius: 100%;
+}
+
+.clickable {
+    border: 1px solid var(--fg-colour);
+    border-radius: 50px;
+}
+
+.clickable:hover {
+    cursor: grab;
+    background-color: var(--hover-colour)
+}
+
+.selected {
+    background-color: var(--selected-colour);
+}
+
+.hidden {
+    display: none;   
+}
