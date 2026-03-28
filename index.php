@@ -32,6 +32,7 @@ session_start();
         <input type="email", id="email", placeholder="Example@gmail.com">
         <input type="date", id="birthdate">
         <input type="button", id="submit", value="Login">
+        <p id="feedback"></p>
     </div>
 </body>
 
