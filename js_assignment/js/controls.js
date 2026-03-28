@@ -1,0 +1,231 @@
+/**
+ * Author : Alexander Perlock
+ * MACID : perlocka
+ * Date Created : 02 03 26
+ * Date Modified : 21 03 26
+ * 
+ * Houses the class and methods for moving player objects
+ */
+
+/**
+ * Creates a mobile + desktop canvas element on a parent element
+ * 
+ * @param {String} parent_ID the HTML id of the element that should house the trackpad
+ */
+class Trackpad {
+    constructor(parent_ID = "controls") {
+        // create canvas element
+        const p = document.getElementById(parent_ID);
+        this.c = document.createElement("canvas");
+        this.c.width = 300;
+        this.c.height = 300;
+        this.c.classList.add("trackpad");
+        p.appendChild(this.c);
+
+        this.ctx = this.c.getContext("2d");
+        this.CENTER = Math.min(this.c.width, this.c.height) / 2; // makes this a square
+        this.USER_RADIUS = 25;
+        this.BORDER = 5;
+        this.EXTREMA = this.CENTER - this.BORDER - this.USER_RADIUS;
+        this.GRID = {
+            MINOR_RADIUS : this.CENTER - 30,
+            MAJOR_RADIUS : 30
+        }
+        this.x = 0;
+        this.y = 0;
+        
+        this.colour = "rgba(150, 150, 150, 0.5)";
+        // this.ctx.strokeStyle = colour;
+        // this.ctx.fillStyle = colour;
+
+        const track_mouse = (event) => {
+            this.#get_pos(event);
+            this.render();
+        };
+        const start = (event) => {
+            this.c.addEventListener("mousemove", track_mouse);
+            this.c.addEventListener("touchmove", track_mouse);
+            track_mouse(event);
+        }
+        const end = () => {
+            this.c.removeEventListener("mousemove", track_mouse);
+            this.c.removeEventListener("touchmove", track_mouse);  
+            this.x = 0;
+            this.y = 0;
+            this.render();
+        }
+
+        // browser support
+        this.c.addEventListener("pointerdown", start);
+        this.c.addEventListener("pointerup", end);
+
+        // mobile support 
+        this.c.addEventListener("touchend", end);
+
+        // leaving element
+        this.c.addEventListener("mouseleave", end);
+
+        this.render();
+    }
+
+    /**
+     * Creates a vector object consiting of 
+     *      - x : the x direction vector
+     *      - y : the y direction vector
+     * 
+     * @param {Int} factor the viewport factor, reduces the vector by 1 / factor
+     * 
+     * @returns The vector object
+     */
+    get_adjusted_vector(factor) {
+        let x = this.x / this.EXTREMA;
+        let y = this.y / this.EXTREMA;
+        let mult = (x ** 2 + y ** 2) ** (1 / 2) / factor;
+        x *= mult; y *= mult;
+        return {x:x, y:y};
+    }
+
+    /**
+     * Sets the position of the trackpad to this.x and this.y
+     * 
+     * @param event HTML touch / mouse event
+     */
+    #get_pos(event) {
+        let x = 0; let y = 0    ;
+        if (event.touches) {
+            let touch = event.touches[0];
+            x = touch.clientX;
+            y = touch.clientY;
+        } else {
+            x = event.x;
+            y = event.y;
+        }
+        x -= this.c.offsetLeft + this.CENTER;
+        y -= this.c.offsetTop + this.CENTER;
+
+        let dist = (x ** 2 + y ** 2) ** (1 / 2);
+        if (dist > this.EXTREMA) {
+            let mult = this.EXTREMA / dist;
+            x *= mult;
+            y *= mult;
+        }
+
+        this.x = x;
+        this.y = y;
+    }
+
+
+    /**
+     * Draws the trackpad
+     */
+    render() {
+        this.ctx.clearRect(0, 0, this.c.width, this.c.height);
+
+        // cross centered at middle
+        this.ctx.beginPath();
+
+        this.ctx.moveTo(this.CENTER - this.GRID.MAJOR_RADIUS, this.CENTER);
+        this.ctx.lineTo(this.CENTER - this.GRID.MINOR_RADIUS, this.CENTER);
+
+        this.ctx.moveTo(this.CENTER + this.GRID.MAJOR_RADIUS, this.CENTER);
+        this.ctx.lineTo(this.CENTER + this.GRID.MINOR_RADIUS, this.CENTER);
+
+        this.ctx.moveTo(this.CENTER, this.CENTER - this.GRID.MAJOR_RADIUS);
+        this.ctx.lineTo(this.CENTER, this.CENTER - this.GRID.MINOR_RADIUS);
+
+        this.ctx.moveTo(this.CENTER, this.CENTER + this.GRID.MAJOR_RADIUS);
+        this.ctx.lineTo(this.CENTER, this.CENTER + this.GRID.MINOR_RADIUS);
+
+        this.ctx.closePath();
+
+        this.ctx.lineWidth = 2;
+        this.ctx.strokeStyle = this.colour;
+        this.ctx.stroke();
+
+        // outer circle boundary
+        this.ctx.beginPath();
+        this.ctx.arc(this.CENTER, this.CENTER, this.CENTER - 4, 0, 2 * Math.PI);
+        this.ctx.closePath();
+        this.ctx.lineWidth = this.BORDER;
+        this.ctx.strokeStyle = this.colour;
+        this.ctx.stroke();
+
+        // circle at this.x, this.y, or touching boudary at maximum
+        this.ctx.beginPath();
+        this.ctx.arc(this.x + this.CENTER, this.y + this.CENTER, this.USER_RADIUS, 0, 2 * Math.PI);
+        this.ctx.closePath();
+        this.ctx.fillStyle = this.colour;
+        this.ctx.fill();
+    }
+}
+
+/**
+ * Keyboard
+ * 
+ * Allows for keyboard inputs
+ */
+class Keyboard {
+    constructor() {
+        this.keysPressed = {};
+        this.v_x = 0;
+        this.v_y = 0;
+        document.addEventListener("keydown", (event) => {
+            this.keysPressed[event.code] = true;
+            this.#inputs();
+        });
+
+        document.addEventListener("keyup", (event) => {
+            delete this.keysPressed[event.code];
+            this.#inputs();
+        })
+    }
+
+    /**
+     * Categorises valid keyboard inputs
+     * 
+     * Pushes the vector direction to this.v_x and this.v_y
+     */
+    #inputs() {
+        this.v_x = 0;
+        this.v_y = 0;
+        let mult = 1;
+
+        Object.keys(this.keysPressed).forEach(key => {
+            switch (key) {
+                case "KeyW": // Up
+                    this.v_y -= 1;
+                    break;
+                case "KeyA": // Left
+                    this.v_x -= 1;
+                    break;
+                case "KeyS": // Down
+                    this.v_y += 1;
+                    break;
+                case "KeyD": // Right
+                    this.v_x += 1;
+                    break;
+                case "ShiftLeft": // Slow
+                    mult = 0.5;
+            }
+        });
+        if (Math.abs(this.v_x) + Math.abs(this.v_y) > 1) {
+            this.v_x /= Math.sqrt(2);
+            this.v_y /= Math.sqrt(2);
+        }
+        this.v_x *= mult;
+        this.v_y *= mult;
+    }
+
+    /**
+     * Creates a vector object consiting of 
+     *      - x : the x direction vector
+     *      - y : the y direction vector
+     * 
+     * @param {Int} factor the viewport factor, reduces the vector by 1 / factor
+     * 
+     * @returns The vector object
+     */
+    get_adjusted_vector(factor) {
+        return {x:this.v_x / factor, y:this.v_y / factor};
+    }
+}
