@@ -11,95 +11,16 @@
  * 
  * Note : Game Page / Logic is in maze.js
  */
-
-/**
- * Houses basic functions and definitions used by more than one page
- */
-class Page {
-    constructor() {
-        this.end = 0;
-    }
-
-    /**
-     * Creates an overlay to render onto the screen
-     * 
-     * @returns the overlay object
-     */
-    create_overlay() {
-        const disp = document.getElementById("display");
-        // disp.classList.add(this.constructor.name.toLowerCase()); // not actually used -> was for css formating
-        return disp;
-    }
-
-    /**
-     * Creates a new element and appends it to a parent
-     * 
-     * @param parent the HTML parent element
-     * @param {string} type the HTML element code, if blank assumed to be a paragraph : "p"
-     * @param {string} innerText the innerText of the element
-     * @param {string} id the element's id
-     * @param {Array<string>} classes the list of the element's classes 
-     * 
-     * @returns the new element
-     */
-    create_e(parent, type = "p", innerText, id, classes) {
-        const e = document.createElement(type);
-        if (innerText) {
-            e.innerHTML = innerText;
-        }
-        if (id) {
-            e.id = id;
-        }
-        if (classes) {
-            classes.forEach(c => e.classList.add(c));
-        }
-
-        parent.appendChild(e);
-        return e;
-    }
-
-    /**
-     * Gets the page that should be displayed next
-     * 
-     * @param c the canvas element
-     * @param ctx the canvas element's ctx
-     * 
-     * @returns the next page to be displayed
-     */
-    get_target(c, ctx) {
-        return this.target;
-    }
-
-    /**
-     * Updates the page and canvas
-     * 
-     * Parent is empty - allows for calling of a null function
-     * 
-     * @param c the canvas element
-     * @param ctx the canvas element's ctx
-     */
-    update(c, ctx) {}
-
-    /**
-     * Clears the screen of unneeded elements and clears the canvas element
-     * 
-     * @param c the canvas element
-     * @param ctx the canvas element's ctx
-     */
-    clear(c, ctx) {
-        const disp = document.getElementById("display");
-        disp.classList.remove(this.constructor.name.toLowerCase());
-        disp.innerHTML = "";
-        ctx.reset();
-    }
-}
+import {GameMap} from "./map.js";
+import {Page} from "./page_class.js";
+import {Maze} from "./maze.js";
 
 /**
  * Handles Splash Page / Logic
  * 
  * @param c the canvas element
  */
-class Splash extends Page {
+export class Splash extends Page {
     constructor(c) {
         super();
         this.target = Info;
@@ -168,7 +89,7 @@ class Splash extends Page {
 /**
  * Handles Start Page / Logic
  */
-class Start extends Page {
+export class Start extends Page {
     constructor() {
         super();
         this.target = Maze;
@@ -227,7 +148,7 @@ class Start extends Page {
 /**
  * Handles Setting Page / Logic
  */
-class Settings extends Page {
+export class Settings extends Page {
     constructor() {
         super();
         let ls = localStorage.settings;
@@ -325,7 +246,7 @@ class Settings extends Page {
 /**
  * Handles Scoreboard Page / Logic
  */
-class Scoreboard extends Page {
+export class Scoreboard extends Page {
     constructor(score) {
         super();
         this.target = Start;
@@ -387,7 +308,7 @@ class Scoreboard extends Page {
     }
 }
 
-class Info extends Page {
+export class Info extends Page {
     constructor() {
         super();
 

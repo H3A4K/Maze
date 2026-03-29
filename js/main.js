@@ -1,93 +1,78 @@
 /**
  * Author : Alexander Perlock
  * MACID : perlocka
- * Date Created : 02 03 26
- * Date Modified : 21 03 26
+ * Date Created : 28 03 26
+ * Date Modified : 28 03 26
  * 
- * Handles functionality on page load
+ * Main event and page handling
  */
-window.addEventListener("load", () => {
-    const c = document.getElementById("banner");
-    const ctx = c.getContext("2d");
 
-    let activeInstance =  new Splash(c);
 
-    // Handles returning to the main menu by clicking the exit element
-    const exit = document.getElementById("exit");
-    exit.addEventListener("mousedown", () => {
-        activeInstance.clear(c, ctx); 
-        change_instance(Start);
-    });
+import {main as login} from "./login.js";
+import {main as game} from "./game.js";
+
+window.addEventListener("load", function() {
+    const container = document.getElementById("container");
 
     /**
-     * Adds a game score to local storage
+     * Handles Swapping from login form to move to play.php form
      * 
-     * @param s the new score
+     * @param {HTMLElement} container
      */
-    function add_to_score(s) {
-        if (s === -1) { return }
-        let scores = localStorage.scores;
-        if (!scores) { 
-            scores = [] 
+    function send_to_page(inner_page, main) {
+        container.innerHTML = "";
+        console.log(inner_page)
+        if (inner_page instanceof Array) {
+            inner_page.forEach(part => container.appendChild(part));
+        } else if (inner_page instanceof HTMLElement) {
+            container.appendChild(inner_page);
         } else {
-            scores = JSON.parse(scores);
+            container.innerHTML = inner_page;
         }
-        scores.push(s);
-        localStorage.scores = JSON.stringify(scores);
-    }
 
-    /**
-     * Swaps from the current page to target
-     * 
-     * @param target The page to be swapped to
-     */
-    function change_instance(target) {
-        if (!target) { return }
-        latest_score = {score : null};
-        switch (true) {
-            case activeInstance instanceof Maze:
-                latest_score = activeInstance.get_score();
-                add_to_score(latest_score);
-                break;
-        }
-        switch (target) {
-            case Splash: 
-                c.classList.remove("hidden");
-                activeInstance = new target(c);
-                break;
-            case Maze: 
-                c.classList.remove("hidden");
-                activeInstance = new target();
-                break;
-            case Settings: case Start: case Info:
-                c.classList.add("hidden");
-                activeInstance = new target();
-                break;
-            case Scoreboard:
-                c.classList.add("hidden");
-                activeInstance = new target(latest_score.score);
-                break;
+        if (main) {
+            main();
         }
     }
-
-    // Main update loop
-    setInterval(() => {
-        activeInstance.update(c, ctx);
-        if (activeInstance.end) {
-            change_instance(activeInstance.get_target(c, ctx));
-        }
-    }, 1);
-
     
-    // Allows for resizing the canvas
-    function adjust_view_port() {
-        c.width = screen.width * 1;
-        c.height = screen.height * 0.75;
+    /**
+     * Handles Swapping from login form to move to play.php form
+     * 
+     * @param {HTMLElement} container
+     */
+    function login_success(container, email) {
+        if (!email) {
+            email = document.getElementById("email").value;
+        }
 
-        activeInstance.update(c, ctx);
+        const b = document.createElement("input");
+        b.setAttribute("type", "button");
+        b.setAttribute("value", "START MAZE");
+        send_to_page(b);
+
+        b.addEventListener("click", () => {
+            let url = "play.php?email=" + email;
+            console.log("A")
+            fetch(url)
+                .then(response => response.text())
+                .then((text) => send_to_page(text, game));
+        });
     }
-    window.addEventListener("resize", adjust_view_port);
-    adjust_view_port();
+
+    function validate_session(text) {
+        if (text) {
+            document.getElementById("email").value = text;
+            document.getElementById("feedback").innerText = "Login Sucessful. Welcome Back To MAZE";
+            login_success(container, text);
+        } else {
+            login(() => login_success(container));
+        }
+    }
+
+    fetch("session.php")
+        .then(response => response.text())
+        .then(validate_session);
+
+    login(() => login_success(container));
 
 });
-

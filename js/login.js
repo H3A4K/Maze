@@ -7,33 +7,13 @@
  * Handles login logic for index.php and login.php
  */
 
-window.addEventListener("load", function() {
+/**
+ * Main program logic for login
+ * 
+ * @param {function} login_success
+ */
+export function main(login_success) {
     const button = document.getElementById("submit");
-    
-    /**
-     * Handles Swapping from login form to move to play.php form
-     */
-    function login_success() {
-        const email = document.getElementById("email").value;
-
-        const container = document.getElementById("container");
-        container.innerHTML = null;
-
-        const form = document.createElement("form");
-        form.setAttribute("method", "POST");
-        form.setAttribute("action", "./play.php");
-
-        const hidden_e = document.createElement("input");
-        hidden_e.setAttribute("type", "email");
-        hidden_e.setAttribute("value", email);
-        hidden_e.setAttribute("name", "email");
-
-        const submit = document.createElement("input");
-        submit.setAttribute("type", "submit");
-
-        form.appendChild(submit);
-        container.appendChild(form);
-    }
 
     /**
      * Handles the return from the AJAX fetch
@@ -45,8 +25,8 @@ window.addEventListener("load", function() {
      */
     function fetch_success(key) {
         const display = document.getElementById("feedback");
-        console.log(key)
-        switch (parseInt(key)) {
+        // console.log(key);
+        switch (parseInt(key.trim())) {
             case 0:  
                 document.getElementById("email").style.backgroundColor = "rgba(190, 70, 70, 1)";
                 document.getElementById("birthdate").style.backgroundColor = "rgba(190, 70, 70, 1)";
@@ -88,10 +68,19 @@ window.addEventListener("load", function() {
         if (!birthdate.value) { return }
 
         let url = "./login.php?email=" + email.value + "&birthdate=" + birthdate.value;
-        console.log(url);
         fetch(url)
-            .then(response => response.text())
-            .then(fetch_success)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error, status: ${response.status}`);
+                }
 
+                return response.text();
+            })
+            .then(fetch_success)
+            .catch(error => {
+                console.error('Fetch error:', error);
+            })
     });
-});
+}
+
+// window.addEventListener("load", main);

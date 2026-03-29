@@ -23,17 +23,28 @@ session_start();
 
     <title>MAZE - LOGIN</title>
 
-    <script src="./js/login.js"></script>
+    <link rel="stylesheet" href="./assets/css/global.css">
+
+    <script type="module" src="./js/page_class.js"></script>
+    <script type="module" src="./js/map.js"></script>
+    <script type="module" src="./js/controls.js"></script> 
+    <script type="module" src="./js/pages.js"></script>
+    <script type="module" src="./js/maze.js"></script>
+    <script type="module" src="./js/game.js"></script>
+    <script type="module" src="./js/login.js"></script>
+    <script type="module" src="./js/main.js"></script>
 
 </head>
 
 <body>
+    <header><img src="./assets/images/exit.png" id="exit" width="64px" height="64px" class="hidden"><h1>Maze</h1></header>
     <div id="container">
         <input type="email", id="email", placeholder="Example@gmail.com">
         <input type="date", id="birthdate">
         <input type="button", id="submit", value="Login">
-        <p id="feedback"></p>
     </div>
+    <p id="feedback"></p>
+    <footer></footer>
 </body>
 
 </html>

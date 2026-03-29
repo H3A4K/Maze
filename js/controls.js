@@ -12,7 +12,7 @@
  * 
  * @param {String} parent_ID the HTML id of the element that should house the trackpad
  */
-class Trackpad {
+export class Trackpad {
     constructor(parent_ID = "controls") {
         // create canvas element
         const p = document.getElementById(parent_ID);
@@ -164,7 +164,7 @@ class Trackpad {
  * 
  * Allows for keyboard inputs
  */
-class Keyboard {
+export class Keyboard {
     constructor() {
         this.keysPressed = {};
         this.v_x = 0;

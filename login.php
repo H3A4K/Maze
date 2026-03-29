@@ -9,6 +9,7 @@
  * Fetches the user from the data base, 
  * If the user is not already present, the user is added.
  */
+
 include "./php/connect.php";
 
 /**
@@ -20,13 +21,13 @@ include "./php/connect.php";
  * @return int the user's ID OR 0 if no user matches
  */
 function get_user(PDO $dbh, string $email) {
-    $cmd = "SELECT `userID` FROM `players` WHERE `email`=?";
-    $stmt = $dbh->prepare($cmd);
-    $stmt->execute([$email]);
+    // $cmd = "SELECT `userID` FROM `players` WHERE `email`=?";
+    // $stmt = $dbh->prepare($cmd);
+    // $stmt->execute([$email]);
 
-    $user = $stmt->fetchColumn();
+    // $user = $stmt->fetchColumn();
 
-    return $user === null ? 0 : $user;
+    return $email === null ? 0 : $email;
 }
 
 /**

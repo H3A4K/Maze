@@ -1,10 +1,8 @@
 CREATE TABLE IF NOT EXISTS `players` (
-    `email` varchar(255) UNIQUE,
+    `email` varchar(255) PRIMARY KEY,
     `userID` INT UNIQUE AUTO_INCREMENT,
     `birthdate` DATE NOT NULL,
-    `total_games` INT DEFAULT(0),
-
-    PRIMARY KEY (`email`)
+    `total_games` INT DEFAULT(0)
 );
 
 CREATE TABLE IF NOT EXISTS `scores` (

@@ -9,10 +9,15 @@
  * Note : File created on 21 03 26, but Maze class started creation on 10 03 26
  */
 
+import { Keyboard, Trackpad } from "./controls.js";
+import { Page } from "./page_class.js";
+import { GameMap } from "./map.js";
+import { Scoreboard } from "./pages.js";
+
 /**
  * Handles Game Page / Logic
  */
-class Maze extends Page {
+export class Maze extends Page {
     constructor() {
         super();
         this.settings = localStorage.settings;

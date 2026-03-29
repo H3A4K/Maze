@@ -145,7 +145,7 @@ class Room {
  * 
  * @param {int} num_rooms the number of rooms to generate (does not include the start and end rooms)
  */
-class GameMap {
+export class GameMap {
     constructor(num_rooms = 100) {
         this.rooms = new Array(new Room(0, 0, 15));
         this.possible_rooms = [...this.rooms[0].adjacent];
