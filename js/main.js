@@ -8,10 +8,11 @@
  */
 
 
-import {main as login} from "./login.js";
-import {main as game} from "./game.js";
+import { main as login } from "./login.js";
+import { main as game } from "./game.js";
+import * as AJAX from "./ajax.js";
 
-window.addEventListener("load", function() {
+window.addEventListener("load", function () {
     const container = document.getElementById("container");
 
     /**
@@ -21,7 +22,7 @@ window.addEventListener("load", function() {
      */
     function send_to_page(inner_page, main) {
         container.innerHTML = "";
-        console.log(inner_page)
+        // console.log(inner_page)
         if (inner_page instanceof Array) {
             inner_page.forEach(part => container.appendChild(part));
         } else if (inner_page instanceof HTMLElement) {
@@ -34,13 +35,13 @@ window.addEventListener("load", function() {
             main();
         }
     }
-    
+
     /**
      * Handles Swapping from login form to move to play.php form
      * 
      * @param {HTMLElement} container
      */
-    function login_success(container, email) {
+    function login_success(email) {
         if (!email) {
             email = document.getElementById("email").value;
         }
@@ -51,28 +52,27 @@ window.addEventListener("load", function() {
         send_to_page(b);
 
         b.addEventListener("click", () => {
-            let url = "play.php?email=" + email;
-            console.log("A")
-            fetch(url)
+            // console.log(email)
+            AJAX.POST("play.php", { email: email })
                 .then(response => response.text())
                 .then((text) => send_to_page(text, game));
         });
     }
 
     function validate_session(text) {
-        if (text) {
+        if (text != -1) {
             document.getElementById("email").value = text;
             document.getElementById("feedback").innerText = "Login Sucessful. Welcome Back To MAZE";
-            login_success(container, text);
+            login_success(text);
         } else {
-            login(() => login_success(container));
+            login(login_success);
         }
     }
 
-    fetch("session.php")
+    fetch("session.php") // no need for POST
         .then(response => response.text())
         .then(validate_session);
 
-    login(() => login_success(container));
+    // login(() => login_success(container));
 
 });

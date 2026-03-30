@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Author : Alexander Perlock
  * MACID  : perlocka
@@ -9,7 +9,14 @@
  * Main game page
  */
 
+$email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
+
+if ($email !== null) {
+    ?>
+    <canvas id="banner" class="main"></canvas>
+    <div id="display"></div>
+    <div id="controls"></div>
+    <input type="email" id="email" value="<?= $email ?>" class="hidden">
+
+<?php }
 ?>
-<canvas id="banner" class="main"></canvas>
-<div id="display"></div>
-<div id="controls"></div>

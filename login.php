@@ -12,22 +12,26 @@
 
 include "./php/connect.php";
 
+session_start();
+
 /**
- * Gets the userID from the given email
+ * Checks to see if the user's email is present
  * 
  * @param PDO $dbh The database in which to do queries from/to
  * @param string $email the given email
  * 
- * @return int the user's ID OR 0 if no user matches
+ * @return int|string the user's email OR 0 if no user matches
  */
 function get_user(PDO $dbh, string $email) {
-    // $cmd = "SELECT `userID` FROM `players` WHERE `email`=?";
-    // $stmt = $dbh->prepare($cmd);
-    // $stmt->execute([$email]);
+    $cmd = "SELECT `email` FROM `players` WHERE `email`=?";
+    $stmt = $dbh->prepare($cmd);
+    $stmt->execute([$email]);
 
-    // $user = $stmt->fetchColumn();
+    $user = $stmt->fetchColumn();
 
-    return $email === null ? 0 : $email;
+    return $user === null ? 0 : $user;
+
+    // return $email === null ? 0 : $email;
 }
 
 /**
@@ -40,7 +44,7 @@ function get_user(PDO $dbh, string $email) {
  * @return int the new user's ID
  */
 function add_user(PDO $dbh, string $email, string $birthdate) {
-    $cmd = "INSERT INTO `players` VALUES (?, null, ?, null)";
+    $cmd = "INSERT INTO `players` VALUES (?, ?, 0, null)";
     $stmt = $dbh->prepare($cmd);
     $stmt->execute([$email, $birthdate]);
 
@@ -51,15 +55,15 @@ function add_user(PDO $dbh, string $email, string $birthdate) {
  * Checks the user's stored "password" against the given one
  * 
  * @param PDO $dbh The database in which to do queries from/to
- * @param int $userID the user's ID
+ * @param string $email the user's email (functions as ID)
  * @param string $birthdate the "password" to check
  * 
  * @return bool if the user's password is equal to the given password
  */
-function check_password(PDO $dbh, int $userID, string $birthdate) {
-    $cmd = "SELECT `birthdate` FROM `players` WHERE `userID`=?";
+function check_password(PDO $dbh, string $email, string $birthdate) {
+    $cmd = "SELECT `birthdate` FROM `players` WHERE `email`=?";
     $stmt = $dbh->prepare($cmd);
-    $stmt->execute([$userID]);
+    $stmt->execute([$email]);
 
     $dbh_bd = $stmt->fetchColumn();
 

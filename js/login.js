@@ -7,6 +7,8 @@
  * Handles login logic for index.php and login.php
  */
 
+import * as AJAX from "./ajax.js";
+
 /**
  * Main program logic for login
  * 
@@ -27,12 +29,12 @@ export function main(login_success) {
         const display = document.getElementById("feedback");
         // console.log(key);
         switch (parseInt(key.trim())) {
-            case 0:  
+            case 0:
                 document.getElementById("email").style.backgroundColor = "rgba(190, 70, 70, 1)";
                 document.getElementById("birthdate").style.backgroundColor = "rgba(190, 70, 70, 1)";
                 display.innerText = "Login Unsuccessful, please check your password and account name and try again.";
                 break;
-            case 1: 
+            case 1:
                 login_success();
                 display.innerText = "Login Sucessful. Welcome Back To MAZE";
                 break;
@@ -54,7 +56,7 @@ export function main(login_success) {
         if (!email.includes(".")) { return 0 }
         return 1;
     }
-   
+
     /**
      * Handles sending the AJAX request if critera met.
      */
@@ -67,8 +69,14 @@ export function main(login_success) {
 
         if (!birthdate.value) { return }
 
-        let url = "./login.php?email=" + email.value + "&birthdate=" + birthdate.value;
-        fetch(url)
+        let url = "./login.php";
+        console.log(email.value, birthdate.value);
+        fetch(url + "?email=" + email.value + "&birthdate=" + birthdate.value)
+        // fetch(url,
+        //     {
+        //         method: "POST",
+        //         body: { email: email.value, birthdate: birthdate.value }
+        //     })
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error, status: ${response.status}`);

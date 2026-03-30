@@ -27,9 +27,11 @@ export class Maze extends Page {
             this.settings = {controller: "Trackpad", rooms: 3};
         } else {
             this.settings = JSON.parse(this.settings);
+            this.settings.rooms = parseInt(this.settings.rooms);
             this.controller = this.settings.controller == "Keyboard" ? new Keyboard() : new Trackpad();
             this.map = new GameMap(10 ** this.settings.rooms);
         }
+
         this.factor = 256;
         this.target = Scoreboard;
         this.start = new Date();
@@ -54,7 +56,8 @@ export class Maze extends Page {
 
         const time = new Date();
 
-        return {controller : this.settings.controller, rooms : 10 ** this.settings.rooms, score : (time - this.start) / 1000};
+        // console.log(typeof parseInt(this.settings.rooms))
+        return {controller : this.settings.controller, rooms : this.settings.rooms, score : time - this.start};
     }
 
     /**

@@ -48,7 +48,7 @@ export function main() {
      */
     function change_instance(target) {
         if (!target) { return }
-        let latest_score = {score : null};
+        let latest_score = null;
         switch (true) {
             case activeInstance instanceof Maze:
                 latest_score = activeInstance.get_score();
@@ -70,7 +70,7 @@ export function main() {
                 break;
             case Scoreboard:
                 c.classList.add("hidden");
-                activeInstance = new target(latest_score.score);
+                activeInstance = new target(latest_score);
                 break;
         }
     }
