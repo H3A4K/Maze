@@ -46,12 +46,16 @@ window.addEventListener("load", function () {
             email = document.getElementById("email").value;
         }
 
-        const b = document.createElement("input");
-        b.setAttribute("type", "button");
-        b.setAttribute("value", "START MAZE");
+        const b = document.createElement("h1");
+        // b.setAttribute("type", "button");
+        b.innerText = "START MAZE";
+        // .setAttribute("value", "START MAZE");
+        // b.setAttribute("id", "")
+        b.classList.add("clickable");
+        b.classList.add("title");
         send_to_page(b);
 
-        b.addEventListener("click", () => {
+        b.addEventListener("mousedown", () => {
             // console.log(email)
             AJAX.POST("play.php", { email: email })
                 .then(response => response.text())

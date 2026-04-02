@@ -4,18 +4,9 @@
  * Date Created : 02 03 26
  * Date Modified : 21 03 26
  * 
- * Global formating and imports
+ * Global formating
  */
-
-/* Imports */
-@import url(./colour.css);
-@import url(./pages.css);
-@import url(./info.css);
-@import url(./start_page.css);
-@import url(./settings_page.css);
-@import url(./scoreboard_page.css);
-
-/* Formating */
+ 
 * {
     color: var(--fg-colour);
     margin : 0;
@@ -24,6 +15,7 @@
     font-size: 3vh;
     list-style: none;
 }
+
 
 h1 {
     font-size: 5vh;

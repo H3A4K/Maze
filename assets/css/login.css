@@ -1,0 +1,30 @@
+/* 
+ * Author : Alexander Perlock
+ * MACID : perlocka
+ * Date Created : 01 04 26
+ * Date Modified : 01 04 26
+ * 
+ * Loggin page
+ */
+@import url(./colour.css);
+
+
+.login {
+    margin-left: 5%;
+    margin-top: 5%
+}
+
+input {
+    background-color: var(--bg-colour);
+    color: var(--fg-colour);
+}
+
+#email, #birthdate {
+    margin-left: 2%;
+    display: inline;
+}
+
+#feedback, #submit {
+    width: 90%;
+    text-align: center;
+}

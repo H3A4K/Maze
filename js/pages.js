@@ -279,12 +279,12 @@ export class Scoreboard extends Page {
     create_overlay(score) {
         const disp = super.create_overlay();
 
-        console.log(score);
+        // console.log(score);
 
         let url = "./leaderboard.php";
-        let email = document.getElementById("email").value;
+        // let email = document.getElementById("email").value;
 
-        AJAX.POST(url, { email: email, results: JSON.stringify(score) })
+        AJAX.POST(url, { results: JSON.stringify(score) })
             .then(response => response.text())
             .then((text) => disp.innerHTML = text);
 

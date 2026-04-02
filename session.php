@@ -12,7 +12,7 @@ include "./php/connect.php";
 
 session_start();
 
-if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION["user"])) {
+if (isset($_SESSION["user"])) {
     echo $_SESSION["user"];
 } else {
     echo -1;

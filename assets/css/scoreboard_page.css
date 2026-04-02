@@ -8,7 +8,24 @@
  */
 @import url(./colour.css);
 
-#scores, #example_score {
+table {
+    width: 100%;
+    margin-bottom: 5%;
+}
+
+td:first-child {
+    text-align: left;
+}
+
+td:not(:first-child) {
+    text-align: right;
+}
+
+th {
+    text-align: center;
+}
+
+/* #scores, #example_score {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -42,4 +59,4 @@
         width: 85%;
         margin-bottom: 1.5%;
     }
-}
+} */

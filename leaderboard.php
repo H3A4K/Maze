@@ -19,11 +19,15 @@ include "./php/connect.php";
  * @param int $rooms the power of 10 of the number of rooms played, ex. 100 = 10^2, rooms = 2
  * @param string $controller the method of controls the user used
  * @param int $time the time it took for the round
+ * @param string $date the date the game was played on
+ * @param string $time_completed the time the game ended
  */
-function add_score(PDO $dbh, string $user, int $rooms, string $controller, int $time) {
-    $cmd = "INSERT INTO `scores` VALUES (?, CAST(? AS UNSIGNED), ?, ?)";
+function add_score(PDO $dbh, string $user, int $rooms, string $controller, int $time, string $date, string $time_completed) {
+    $cmd = "INSERT INTO `scores` (`email`, `rooms`, `time`, `controller`, `date`, `time_completed`) VALUES (?, CAST(? AS UNSIGNED), ?, ?, ?, ?)";
     $stmt = $dbh->prepare(($cmd));
-    $stmt->execute([$user, $rooms - 1, $time, $controller === "Keyboard"]);
+    $stmt->execute([$user, $rooms - 1, $time, $controller === "Keyboard", $date, $time_completed]);
+
+        // echo $user, " ", $rooms - 1, " ", $time, " ", $controller === "Keyboard", " ", $date, " ", $time_completed;
 
     $cmd2 = "UPDATE `players` SET `average`=?, `total_games`=`total_games`+1 WHERE `email`=?";
     $stmt2 = $dbh->prepare($cmd2);
@@ -60,7 +64,7 @@ function get_user_ave(PDO $dbh, string $user, int $limit = -1) {
         $num++;
     }
 
-    return $total / $num_rooms / $num;
+    return round($total / $num_rooms / $num / 1000, 3);
 }
 
 /**
@@ -71,7 +75,13 @@ function get_user_ave(PDO $dbh, string $user, int $limit = -1) {
  * @return string formated user
  */
 function format_user(mixed $row) {
-    return "<tr><td>$row[email]</td><td>$row[total_games]</td><td>$row[average]</td></tr>";
+    $out = "<tr><td>";
+    
+    $out .= "$row[email]</td><td>$row[total_games]</td><td>$row[average]</td>";
+
+    $out .= "</tr>";
+
+    return $out;
 }
 
 /**
@@ -83,7 +93,7 @@ function format_user(mixed $row) {
  */
 function format_table(bool $header) {
     if ($header) {
-        return "<table><tr><th>Email</th><th>Total Games Played</th><th>Average Time</th></tr>";
+        return "<table><tr><th>Email</th><th>Total Games Played</th><th>Average Time Per Room</th></tr>";
     }
     return "</table>";
 }
@@ -133,19 +143,29 @@ function get_user_info(PDO $dbh, string $user) {
     return format_table(true) . format_user($stmt->fetch()) . format_table(false);
 }
 
-function main($email, $results) {
+// $email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
 
-}
+session_start();
 
-$email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
-$results = json_decode($_POST['results'], true);
+$email = isset($_SESSION["user"]) ? $_SESSION["user"] : null;
+
+// echo $email;
+
+$data = filter_input(INPUT_POST, "results", FILTER_DEFAULT);
+$results = json_decode($data, true, 32);
+
+// $results = json_decode($_POST['results'], true);
 
 if ($email !== null) {
     if ($results !== null) {
-        add_score($dbh, $email, $results["rooms"], $results["controller"], $results["score"]);
+        add_score($dbh, $email, $results["rooms"], $results["controller"], $results["score"], $results["date"], $results["time_completed"]);
     }
 
+    echo "<h1 class='title'>User Stats</h1>";
+
     echo get_user_info($dbh, $email);
+
+    echo "<h1 class='title'>Best Players</h1>";
 
     echo get_best_users($dbh, 2);
 }

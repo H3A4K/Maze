@@ -71,8 +71,8 @@ function check_password(PDO $dbh, string $email, string $birthdate) {
 }
 
 
-$email = filter_input(INPUT_GET, "email", FILTER_VALIDATE_EMAIL);
-$birthdate = filter_input(INPUT_GET, "birthdate", FILTER_DEFAULT);
+$email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
+$birthdate = filter_input(INPUT_POST, "birthdate", FILTER_DEFAULT);
 
 $user = get_user($dbh, $email);
 

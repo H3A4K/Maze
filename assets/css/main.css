@@ -1,0 +1,17 @@
+/* 
+ * Author : Alexander Perlock
+ * MACID : perlocka
+ * Date Created : 01 04 26
+ * Date Modified : 01 04 26
+ * 
+ * Imports
+ */
+
+@import url(./colour.css);
+@import url(./global.css);
+@import url(./login.css);
+@import url(./pages.css);
+@import url(./info.css);
+@import url(./start_page.css);
+@import url(./settings_page.css);
+@import url(./scoreboard_page.css);

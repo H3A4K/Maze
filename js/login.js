@@ -53,7 +53,12 @@ export function main(login_success) {
      * @return 0 (email invalid) or 1 (email valid)
      */
     function validate_email(email) {
-        if (!email.includes(".")) { return 0 }
+        console.log(email.lastIndexOf("."), email.lastIndexOf("@"))
+        if (!email.includes(".") || email.indexOf("@") > email.lastIndexOf(".")) { 
+            const display = document.getElementById("feedback");
+            display.innerText = "Email Address Invalid. A valid email address requires an \"@\", and a \".\" that follows";
+            return 0;
+        }
         return 1;
     }
 
@@ -67,16 +72,16 @@ export function main(login_success) {
 
         const birthdate = document.getElementById("birthdate");
 
-        if (!birthdate.value) { return }
+        if (!birthdate.value) { 
+            const display = document.getElementById("feedback");
+            display.innerText = "No Birthday Entered. Please enter in the correct birthday to continue"
+            return 
+        }
 
         let url = "./login.php";
-        console.log(email.value, birthdate.value);
-        fetch(url + "?email=" + email.value + "&birthdate=" + birthdate.value)
-        // fetch(url,
-        //     {
-        //         method: "POST",
-        //         body: { email: email.value, birthdate: birthdate.value }
-        //     })
+        // console.log(email.value, birthdate.value);
+        AJAX.POST(url, { email : email.value, birthdate : birthdate.value})
+        // fetch(url + "?email=" + email.value + "&birthdate=" + birthdate.value)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error, status: ${response.status}`);

@@ -24,7 +24,7 @@ export class Maze extends Page {
         if (!this.settings) {
             this.controller = new Trackpad("controls");
             this.map = new GameMap(1000);
-            this.settings = {controller: "Trackpad", rooms: 3};
+            this.settings = { controller: "Trackpad", rooms: 3 };
         } else {
             this.settings = JSON.parse(this.settings);
             this.settings.rooms = parseInt(this.settings.rooms);
@@ -37,10 +37,10 @@ export class Maze extends Page {
         this.start = new Date();
 
         this.current_room = this.map.start;
-        this.player = {x: this.current_room.x, y: this.current_room.y};
+        this.player = { x: this.current_room.x, y: this.current_room.y };
 
     }
-    
+
     /**
      * Returns the score of the game instance as a formatted object containing:
      *      controller  - The controller used
@@ -56,8 +56,18 @@ export class Maze extends Page {
 
         const time = new Date();
 
+        // const d = document.createElement("input");
+        // d.setAttribute("type", "date");
+        // d.value = time.toLocaleDateString();
+
         // console.log(typeof parseInt(this.settings.rooms))
-        return {controller : this.settings.controller, rooms : this.settings.rooms, score : time - this.start};
+        return {
+            controller: this.settings.controller,
+            rooms: this.settings.rooms,
+            score: time - this.start,
+            date: time.toLocaleDateString(),
+            time_completed: time.toTimeString().slice(0, 8)
+        };
     }
 
     /**
@@ -111,7 +121,7 @@ export class Maze extends Page {
 
         let x = Math.floor(this.player.x + 0.5);
         let y = Math.floor(this.player.y + 0.5);
-        if (x !== this.current_room.x || y !== this.current_room.y){
+        if (x !== this.current_room.x || y !== this.current_room.y) {
             this.current_room = this.map.rooms.find(r => r.x === x && r.y === y);
 
             if (this.current_room === this.map.end) {

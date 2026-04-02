@@ -6,11 +6,12 @@ CREATE TABLE IF NOT EXISTS `players` (
 );
 
 CREATE TABLE IF NOT EXISTS `scores` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
     `email` varchar(255),
     `rooms` bit(2), -- stored as the base 10 power minus 1 (e.g. 100 = 10^2, rooms = 1)
     `time` INT, -- stored in ms
     `controller` bit(1), -- stored as 0 = Trackpad, 1 = Keyboard
-    -- maybe? `date/time completed`
-
+    `date` DATE,
+    `time_completed` TIME,
     FOREIGN KEY (`email`) REFERENCES `players`(`email`)
 );

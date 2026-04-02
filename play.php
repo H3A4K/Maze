@@ -16,7 +16,7 @@ if ($email !== null) {
     <canvas id="banner" class="main"></canvas>
     <div id="display"></div>
     <div id="controls"></div>
-    <input type="email" id="email" value="<?= $email ?>" class="hidden">
+    <!-- <input type="email" id="email" value="<?= $email ?>" class="hidden"> -->
 
 <?php }
 ?>
