@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `players` (
-    `email` varchar(255) PRIMARY KEY,
-    `birthdate` DATE NOT NULL,
+    `email` varchar(255) PRIMARY KEY, -- acting as userID
+    `birthdate` DATE NOT NULL,  -- acting as password
     `total_games` INT DEFAULT(0),
     `average` FLOAT DEFAULT(0)
 );

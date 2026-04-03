@@ -292,72 +292,6 @@ export class Scoreboard extends Page {
     }
 }
 
-
-// /**
-//  * Handles Scoreboard Page / Logic
-//  */
-// export class Scoreboard extends Page {
-//     constructor(score) {
-//         super();
-//         this.target = Start;
-
-//         this.create_overlay(score);
-//     }
-
-//     /**
-//      * Gets the page that should be displayed next
-//      * and clears the current viewing off the page
-//      * 
-//      * @param c the canvas element
-//      * @param ctx the canvas element's ctx
-//      * 
-//      * @returns the next page to be displayed
-//      */
-//     get_target(c, ctx) {
-//         this.clear(c, ctx);
-//         return super.get_target(c, ctx);
-//     }
-
-//     /**
-//      * Creates an overlay to render onto the screen
-//      * 
-//      * @returns the overlay object
-//      */
-//     create_overlay(score) {
-//         const disp = super.create_overlay();
-
-//         if (score) {
-//             this.create_e(disp, "h1", "Congrats!!", undefined, ["title"]);
-//             this.create_e(disp, "p", `Your time was ${score}`);
-//         }
-//         this.create_e(disp, "h1", "Scoreboard", undefined, ["title"]);
-
-//         const format_score = (parent, controller, rooms, score) => {
-//             const s = this.create_e(parent, "li");
-//             this.create_e(s, "p", controller, undefined, ["controller"]);
-//             this.create_e(s, "p", rooms, undefined, ["rooms"]);
-//             this.create_e(s, "p", score, undefined, ["score"]);
-//         }
-
-//         const example_scores = this.create_e(disp, "ul", undefined, "example_score");
-//         format_score(example_scores, "Controller", "Rooms", "Score");
-//         format_score(example_scores, "Controller", "Rooms", "Score");
-
-//         const scores_e = this.create_e(disp, "ul", undefined, "scores");
-//         let scores = localStorage.scores;
-//         if (!scores) {
-//             scores = [];
-//         } else {
-//             scores = JSON.parse(scores);
-//         }
-
-//         scores.reverse().splice(0, 8).forEach(score => format_score(scores_e, score.controller, score.rooms, `${score.score}s`));
-
-//         const exit = this.create_e(disp, "h1", "Exit", undefined, ["clickable", "title"]);
-//         exit.addEventListener("mousedown", () => this.end = 1);
-//     }
-// }
-
 export class Info extends Page {
     constructor() {
         super();
@@ -399,7 +333,7 @@ export class Info extends Page {
         this.create_e(disp, "h1", "Credits", undefined, ["title"]);
         const credits = this.create_e(disp, "div", undefined, "credits");
         this.create_e(credits, "p", "Author : Alexander Perlock");
-        this.create_e(credits, "p", "Date of Creation : 21 March 2026");
+        this.create_e(credits, "p", "Date of Creation : 02 April 2026");
         this.create_e(credits, "p", "Product of McMaster University Course Computer Science 1XD3 - Winter 2026")
 
         const exit = this.create_e(disp, "h1", "Exit", undefined, ["clickable", "title"]);
