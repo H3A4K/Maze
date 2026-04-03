@@ -61,11 +61,18 @@ export class Maze extends Page {
         // d.value = time.toLocaleDateString();
 
         // console.log(typeof parseInt(this.settings.rooms))
+
+        let [m, d, y] = time.toLocaleDateString().split("/");
+        
+        let dd = d.padStart(2, "0");
+        let mm = m.padStart(2, "0");
+        let yyyy = y.padStart(4, "0");
+
         return {
             controller: this.settings.controller,
             rooms: this.settings.rooms,
             score: time - this.start,
-            date: time.toLocaleDateString(),
+            date: `${yyyy}-${mm}-${dd}`,
             time_completed: time.toTimeString().slice(0, 8)
         };
     }

@@ -10,8 +10,10 @@
  */
 
 // include "./connect.php";
-session_start();
-session_destroy();
+
+// for testing
+// session_start();
+// session_destroy();
 ?>
 
 <!doctype html>

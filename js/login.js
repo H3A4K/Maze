@@ -53,7 +53,7 @@ export function main(login_success) {
      * @return 0 (email invalid) or 1 (email valid)
      */
     function validate_email(email) {
-        console.log(email.lastIndexOf("."), email.lastIndexOf("@"))
+        // console.log(email.lastIndexOf("."), email.lastIndexOf("@"))
         if (!email.includes(".") || email.indexOf("@") > email.lastIndexOf(".")) { 
             const display = document.getElementById("feedback");
             display.innerText = "Email Address Invalid. A valid email address requires an \"@\", and a \".\" that follows";

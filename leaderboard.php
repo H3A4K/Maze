@@ -26,8 +26,7 @@ function add_score(PDO $dbh, string $user, int $rooms, string $controller, int $
     $cmd = "INSERT INTO `scores` (`email`, `rooms`, `time`, `controller`, `date`, `time_completed`) VALUES (?, CAST(? AS UNSIGNED), ?, ?, ?, ?)";
     $stmt = $dbh->prepare(($cmd));
     $stmt->execute([$user, $rooms - 1, $time, $controller === "Keyboard", $date, $time_completed]);
-
-        // echo $user, " ", $rooms - 1, " ", $time, " ", $controller === "Keyboard", " ", $date, " ", $time_completed;
+    // echo $user, " ", $rooms - 1, " ", $time, " ", $controller === "Keyboard", " ", $date, " ", $time_completed;
 
     $cmd2 = "UPDATE `players` SET `average`=?, `total_games`=`total_games`+1 WHERE `email`=?";
     $stmt2 = $dbh->prepare($cmd2);
@@ -56,15 +55,15 @@ function get_user_ave(PDO $dbh, string $user, int $limit = -1) {
     if (!$stmt->execute($params)) { return -1; } // error code
 
     $total = 0;
-    $num_rooms = 0;
+    // $num_rooms = 0;
     $num = 0; // created here to avoid another dbh reference
     while ($row = $stmt->fetch()) {
-        $num_rooms += 10 ** ($row["rooms"] + 1);
-        $total += $row["time"];
+        $rooms = 10 ** ($row["rooms"] + 1);
+        $total += $row["time"] / $rooms;
         $num++;
     }
 
-    return round($total / $num_rooms / $num / 1000, 3);
+    return round($total / $num / 1000, 3);
 }
 
 /**
@@ -109,7 +108,7 @@ function format_table(bool $header) {
 function get_best_users(PDO $dbh, int $limit = 10) {
     if ($limit <= 0) { return ""; } // error code
 
-    $cmd = "SELECT `email`, `total_games`, `average` FROM `players` ORDER BY `average` LIMIT ?";
+    $cmd = "SELECT `email`, `total_games`, `average` FROM `players` WHERE `average` <> 0 ORDER BY `average` LIMIT ?";
 
     $stmt = $dbh->prepare($cmd);
     $stmt->bindValue(1, $limit, PDO::PARAM_INT);
@@ -167,5 +166,5 @@ if ($email !== null) {
 
     echo "<h1 class='title'>Best Players</h1>";
 
-    echo get_best_users($dbh, 2);
+    echo get_best_users($dbh, 10);
 }

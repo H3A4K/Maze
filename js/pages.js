@@ -14,6 +14,7 @@
 import { GameMap } from "./map.js";
 import { Page } from "./page_class.js";
 import { Maze } from "./maze.js";
+import { Keyboard, Trackpad } from "./controls.js";
 
 import * as AJAX from "./ajax.js";
 

@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS `players` (
     `email` varchar(255) PRIMARY KEY,
     `birthdate` DATE NOT NULL,
     `total_games` INT DEFAULT(0),
-    `average` FLOAT
+    `average` FLOAT DEFAULT(0)
 );
 
 CREATE TABLE IF NOT EXISTS `scores` (

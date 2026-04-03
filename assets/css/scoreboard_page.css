@@ -13,6 +13,18 @@ table {
     margin-bottom: 5%;
 }
 
+th {
+    border-bottom: 2px solid white;
+}
+
+td, th {
+    padding-left: 2%;
+    padding-right: 2%;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    overflow-wrap: break-word;
+}
+
 td:first-child {
     text-align: left;
 }
@@ -24,6 +36,8 @@ td:not(:first-child) {
 th {
     text-align: center;
 }
+
+/* Depricated */
 
 /* #scores, #example_score {
     display: flex;
