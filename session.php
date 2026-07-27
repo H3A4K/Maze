@@ -1,7 +1,6 @@
 <?php 
 /**
  * Author : Alexander Perlock
- * MACID  : perlocka
  * 
  * Date Created  : 29 03 26
  * Date Modified : 29 03 26
