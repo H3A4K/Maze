@@ -6,6 +6,7 @@ DELETE FROM `players`;
 ALTER TABLE `scores` AUTO_INCREMENT = 1;
 
 -- Players
+-- Please note, that these Names and Birthdates are completely fictional
 INSERT INTO `players` (`email`, `birthdate`, `total_games`, `average`) VALUES
 ('albert.einstein@yahoo.de', '1955-04-18', 1, 0.39),
 ('bovbela_THEGOAT@mcmaster.ca', '2004-09-08', 4, 0.319),
